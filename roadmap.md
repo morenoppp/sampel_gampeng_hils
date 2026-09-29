@@ -1,2 +1,3 @@
 - [x] Build the Gampeng Hills landing page with editorial imagery, sections, mobile navigation, FAQ, and WhatsApp inquiry links.
 - [x] Add page metadata and responsive styling.
+- [x] Adapt Geist typography and restrained scroll, image, and link motion from the Scapia reference.

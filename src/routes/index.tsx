@@ -29,9 +29,9 @@ const questions = [
 export const Route = createFileRoute("/")({
   head: () => ({ meta: [
     { title: "Gampeng Hills Campground | Camping di Paninggaran, Pekalongan" },
-    { name: "description", content: "Temukan suasana camping di Gampeng Hills, Paninggaran, Pekalongan. Lihat pengalaman, fasilitas, galeri, dan hubungi kami untuk rencana perjalananmu." },
+    { name: "description", content: "Temukan suasana camping di Gampeng Hills, Paninggaran, Pekalongan. Jelajahi galeri dan susun rencana perjalanan personal dengan AI." },
     { property: "og:title", content: "Gampeng Hills Campground | Camping di Paninggaran" },
-    { property: "og:description", content: "Datang untuk camping. Pulang membawa cerita. Jelajahi Gampeng Hills di Paninggaran, Pekalongan." },
+    { property: "og:description", content: "Jelajahi Gampeng Hills di Paninggaran dan susun rencana camping personal dengan AI." },
     { property: "og:type", content: "website" },
     { name: "twitter:card", content: "summary_large_image" },
   ] }),

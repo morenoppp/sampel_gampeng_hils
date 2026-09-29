@@ -62,8 +62,8 @@ function Index() {
         </nav>}
         <div className="absolute inset-x-0 bottom-20 z-10 mx-auto max-w-[1280px] px-6 md:bottom-24 md:px-12">
           <p className="reveal-up mb-5 text-xs font-semibold uppercase tracking-[.26em] md:text-sm">Paninggaran, Pekalongan · Jawa Tengah</p>
-          <h1 className="editorial-title reveal-up max-w-[950px] text-[clamp(3.5rem,8vw,8.3rem)] uppercase" style={{ animationDelay: "100ms" }}>Lebih dekat<br />dengan alam.</h1>
-          <div className="reveal-up mt-8 flex flex-col gap-6 md:mt-10 md:flex-row md:items-end md:justify-between" style={{ animationDelay: "200ms" }}>
+          <h1 className="editorial-title reveal-up reveal-delay-1 max-w-[950px] text-[clamp(3.5rem,8vw,8.3rem)] uppercase">Lebih dekat<br />dengan alam.</h1>
+          <div className="reveal-up reveal-delay-2 mt-8 flex flex-col gap-6 md:mt-10 md:flex-row md:items-end md:justify-between">
             <p className="max-w-sm text-base leading-relaxed md:text-lg">Lepaskan sejenak rutinitas. Temukan lagi rasa tenang di antara bukit, kabut, dan cerita yang belum selesai.</p>
             <a href="#experience" className="flex items-center gap-3 self-start border-b border-on-image pb-2 text-sm font-semibold uppercase tracking-[.12em] md:self-auto">Jelajahi Gampeng Hills <ArrowDown size={17} /></a>
           </div>

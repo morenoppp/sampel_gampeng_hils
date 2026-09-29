@@ -76,6 +76,8 @@
   .arrow-move { transition: transform .3s ease-out; }
   a:hover .arrow-move, button:hover .arrow-move { transform: translate(3px,-3px); }
   .reveal-up { animation: rise .8s ease-out both; }
+  .reveal-delay-1 { animation-delay: 100ms; }
+  .reveal-delay-2 { animation-delay: 200ms; }
   @keyframes rise { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: translateY(0); } }
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }

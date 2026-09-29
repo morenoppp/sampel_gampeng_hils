@@ -8,3 +8,7 @@
 > Commits you push to the connected branch sync back to Lovable and show up in
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
+
+- Keep the single-page Gampeng Hills experience in the index route with anchor navigation because this is an editorial landing page, not a multi-page booking app.
+- Keep visual design tokens in src/styles.css and reuse the shared Button variants so the brand stays consistent across sections.
+- Use a WhatsApp message link without an invented phone number until the business supplies a verified contact number.

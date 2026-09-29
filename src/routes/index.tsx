@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { ArrowDown, ArrowRight, ArrowUpRight, Menu, X, Plus, Minus } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { TripPlanner } from "@/components/trip-planner";
 import hero from "@/assets/gampeng-hero.jpg";
 import story from "@/assets/gampeng-story.jpg";
 import experience from "@/assets/gampeng-experience.jpg";
@@ -13,6 +14,7 @@ const navigation = [
   { label: "Experience", href: "#experience" },
   { label: "Fasilitas", href: "#fasilitas" },
   { label: "Paket", href: "#paket" },
+  { label: "Rencana AI", href: "#rencana" },
   { label: "Galeri", href: "#galeri" },
   { label: "FAQ", href: "#faq" },
 ];
@@ -27,9 +29,9 @@ const questions = [
 export const Route = createFileRoute("/")({
   head: () => ({ meta: [
     { title: "Gampeng Hills Campground | Camping di Paninggaran, Pekalongan" },
-    { name: "description", content: "Temukan suasana camping di Gampeng Hills, Paninggaran, Pekalongan. Lihat pengalaman, fasilitas, galeri, dan hubungi kami untuk rencana perjalananmu." },
+    { name: "description", content: "Temukan suasana camping di Gampeng Hills, Paninggaran, Pekalongan. Jelajahi galeri dan susun rencana perjalanan personal dengan AI." },
     { property: "og:title", content: "Gampeng Hills Campground | Camping di Paninggaran" },
-    { property: "og:description", content: "Datang untuk camping. Pulang membawa cerita. Jelajahi Gampeng Hills di Paninggaran, Pekalongan." },
+    { property: "og:description", content: "Jelajahi Gampeng Hills di Paninggaran dan susun rencana camping personal dengan AI." },
     { property: "og:type", content: "website" },
     { name: "twitter:card", content: "summary_large_image" },
   ] }),
@@ -124,6 +126,8 @@ function Index() {
           <div className="md:col-span-4 md:pb-2"><p className="mb-8 text-base leading-[1.8] opacity-85">Datang sendiri, bersama teman, atau satu keluarga. Hubungi kami untuk pilihan paket, harga, dan ketersediaan terbaru.</p><Button variant="light" asChild><a href={whatsapp} target="_blank" rel="noopener noreferrer">Tanya paket camping <ArrowUpRight className="arrow-move" /></a></Button></div>
         </div>
       </section>
+
+      <TripPlanner />
 
       <section id="galeri" className="mx-auto max-w-[1280px] px-6 py-24 md:px-12 md:py-32">
         <div data-reveal className="mb-12 flex flex-col justify-between gap-5 md:mb-16 md:flex-row md:items-end"><div><p className="mb-6 text-xs font-bold uppercase tracking-[.22em] text-olive">05 / Galeri</p><h2 className="editorial-title text-[clamp(3rem,5vw,5.3rem)]">Sedikit gambaran.<br />Banyak alasan datang.</h2></div><span className="text-sm text-muted-foreground">Momen-momen di Gampeng Hills ↗</span></div>

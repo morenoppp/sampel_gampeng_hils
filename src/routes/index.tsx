@@ -1,12 +1,19 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { lazy, Suspense, useEffect, useRef, useState } from "react";
 import { ArrowDown, ArrowRight, ArrowUpRight, Menu, X, Plus, Minus } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useLazyVideo } from "@/hooks/use-lazy-video";
 import { TripPlanner } from "@/components/trip-planner";
+import ScrollExpand from "@/components/scroll-expand";
 import hero from "@/assets/gampeng-hero.jpg";
 import story from "@/assets/gampeng-story.jpg";
 import experience from "@/assets/gampeng-experience.jpg";
 import evening from "@/assets/gampeng-evening.jpg";
+import experienceVideo from "@/assets/vidio-optimized.webm";
+import rhythmVideo from "@/assets/vidio2-optimized.webm";
+import rhythmPoster from "@/assets/vidio2-poster.jpg";
+
+const AccordionGallery = lazy(() => import("@/components/accordion-gallery"));
 
 const whatsapp = `https://api.whatsapp.com/send?text=${encodeURIComponent("Halo Gampeng Hills, saya ingin bertanya tentang camping dan ketersediaan tempat.")}`;
 
@@ -41,6 +48,27 @@ export const Route = createFileRoute("/")({
 function Index() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
+  const [galleryReady, setGalleryReady] = useState(false);
+  const galleryRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const gallery = galleryRef.current;
+    if (!gallery || !("IntersectionObserver" in window)) {
+      setGalleryReady(true);
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (!entries[0]?.isIntersecting) return;
+        setGalleryReady(true);
+        observer.disconnect();
+      },
+      { rootMargin: "480px 0px" },
+    );
+    observer.observe(gallery);
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches || !("IntersectionObserver" in window)) return;
@@ -63,7 +91,7 @@ function Index() {
   }, []);
 
   return (
-    <main className="overflow-hidden">
+    <main className="overflow-x-clip">
       <section className="relative min-h-[660px] h-[88svh] max-h-[980px] text-on-image" id="top">
         <img src={hero} alt="Pemandangan perbukitan berkabut dengan tenda camping saat matahari terbit" className="hero-photo absolute inset-0 h-full w-full object-cover" width={1600} height={1104} fetchPriority="high" />
         <div className="image-shade absolute inset-0" />
@@ -93,25 +121,38 @@ function Index() {
         <div className="absolute bottom-6 left-6 z-10 text-[10px] font-medium uppercase tracking-[.18em] opacity-80 md:left-12">01 / A place to pause</div>
       </section>
 
-      <section id="experience" className="mx-auto grid max-w-[1280px] gap-10 px-6 py-24 md:grid-cols-12 md:items-center md:gap-8 md:px-12 md:py-36">
-        <div data-reveal className="md:col-span-5 md:pr-8">
-          <p className="mb-7 text-xs font-bold uppercase tracking-[.22em] text-olive">01 / The experience</p>
-          <h2 className="editorial-title max-w-lg text-[clamp(2.8rem,4.8vw,5rem)]">Kadang, yang kita butuhkan cuma berhenti sebentar.</h2>
-          <p className="mt-8 max-w-md text-base leading-[1.85] text-muted-foreground">Di Gampeng Hills, pagi dimulai dengan udara segar dan pemandangan yang membuatmu ingin tinggal lebih lama. Duduk, tarik napas, dan nikmati waktu tanpa terburu-buru.</p>
-          <a href="#galeri" className="mt-9 inline-flex items-center gap-3 border-b border-primary pb-2 text-sm font-semibold text-primary">Lihat suasananya <ArrowUpRight size={17} className="arrow-move" /></a>
-        </div>
-        <div data-reveal-image className="relative md:col-span-7 md:pl-12">
-          <div className="aspect-[4/5] max-h-[720px] overflow-hidden md:aspect-[5/6]"><img src={story} alt="Suasana tenda di antara perbukitan hijau pada pagi hari" loading="lazy" width={1104} height={1408} className="story-image h-full w-full object-cover" /></div>
-          <span className="absolute -bottom-6 left-0 hidden bg-background px-6 py-5 text-sm font-medium md:block">Pagi yang terasa lebih pelan. ↗</span>
-        </div>
-      </section>
+      <ScrollExpand
+        id="experience"
+        src={experienceVideo}
+        mediaType="video"
+        poster={experience}
+        alt="Tenda camping menghadap lembah hijau berkabut di Gampeng Hills"
+        title="Pagi yang terasa lebih pelan."
+        scrollHint="GULIR UNTUK MEMBUKA PEMANDANGAN"
+        startWidth={48}
+        startHeight={62}
+        mediaZoom={1.12}
+        scrollDistance={1.05}
+        holdDistance={0.45}
+        smoothing={0.16}
+        useWindowScroll
+      >
+        <p className="mb-5 text-xs font-semibold uppercase tracking-[.24em] text-white/75">01 / Gampeng Hills · Paninggaran</p>
+        <h2 className="editorial-title max-w-4xl text-4xl text-white md:text-6xl">Tarik napas.<br />Biarkan hari berjalan pelan.</h2>
+        <p className="mt-6 max-w-xl text-base leading-[1.8] text-white/85 md:text-lg">Di antara bukit dan kabut pagi, ada waktu untuk duduk lebih lama, menikmati udara segar, dan tidak terburu-buru ke mana-mana.</p>
+        <a href="#fasilitas" className="mt-8 inline-flex items-center gap-3 border-b border-white/75 pb-2 text-sm font-semibold text-white">Kenali suasananya <ArrowDown size={17} /></a>
+      </ScrollExpand>
 
       <section className="bg-secondary py-20 md:py-28">
         <div className="mx-auto max-w-[1280px] px-6 md:px-12">
           <div data-reveal className="grid gap-8 md:grid-cols-12 md:items-end"><p className="text-xs font-bold uppercase tracking-[.22em] text-olive md:col-span-3">02 / A different rhythm</p><h2 className="editorial-title max-w-4xl text-[clamp(2.8rem,5vw,5.3rem)] md:col-span-9">Bangun dengan pemandangan. Pulang dengan cerita.</h2></div>
-          <div className="mt-12 grid gap-8 md:mt-20 md:grid-cols-12 md:items-end">
-            <div data-reveal-image className="aspect-[4/3] overflow-hidden md:col-span-8 md:aspect-[3/2]"><img src={experience} alt="Kursi camping dan secangkir minuman menghadap perbukitan" loading="lazy" width={1360} height={1008} className="story-image h-full w-full object-cover" /></div>
-            <div data-reveal className="md:col-span-4 md:pl-10 md:pb-5"><span className="text-5xl font-light text-olive">↗</span><p className="mt-6 text-lg leading-[1.7]">Ada ruang untuk ngobrol lebih lama, menikmati kopi lebih pelan, atau sekadar diam menatap horizon.</p></div>
+          <div className="mt-12 grid gap-8 md:mt-20 md:grid-cols-12 md:items-center">
+            <div className="grid place-items-center md:col-span-7 md:place-items-end">
+              <div data-reveal-image className="h-[min(72svh,720px)] aspect-[9/16] overflow-hidden">
+                <LazyRhythmVideo src={rhythmVideo} poster={rhythmPoster} />
+              </div>
+            </div>
+            <div data-reveal className="md:col-span-5 md:pl-10"><span className="text-5xl font-light text-olive">↗</span><p className="mt-6 text-lg leading-[1.7]">Ada ruang untuk ngobrol lebih lama, menikmati kopi lebih pelan, atau sekadar diam menatap horizon.</p></div>
           </div>
         </div>
       </section>
@@ -131,7 +172,31 @@ function Index() {
 
       <section id="galeri" className="mx-auto max-w-[1280px] px-6 py-24 md:px-12 md:py-32">
         <div data-reveal className="mb-12 flex flex-col justify-between gap-5 md:mb-16 md:flex-row md:items-end"><div><p className="mb-6 text-xs font-bold uppercase tracking-[.22em] text-olive">05 / Galeri</p><h2 className="editorial-title text-[clamp(3rem,5vw,5.3rem)]">Sedikit gambaran.<br />Banyak alasan datang.</h2></div><span className="text-sm text-muted-foreground">Momen-momen di Gampeng Hills ↗</span></div>
-        <div className="grid gap-4 md:grid-cols-12 md:gap-6"><div data-reveal-image className="aspect-[4/5] overflow-hidden md:col-span-5"><img src={story} alt="Tenda dengan latar lanskap perbukitan" loading="lazy" width={1104} height={1408} className="story-image h-full w-full object-cover" /></div><div className="grid gap-4 md:col-span-7 md:gap-6"><div data-reveal-image className="aspect-[4/3] overflow-hidden md:aspect-[16/9]"><img src={hero} alt="Kabut pagi menyelimuti perbukitan dekat area camping" loading="lazy" width={1600} height={1104} className="story-image h-full w-full object-cover" /></div><div data-reveal-image className="aspect-[4/3] overflow-hidden md:aspect-[16/9]"><img src={experience} alt="Pemandangan gunung dari tempat duduk camping" loading="lazy" width={1360} height={1008} className="story-image h-full w-full object-cover" /></div></div></div>
+        <div ref={galleryRef} data-reveal-image className="min-h-[440px]">
+          {galleryReady ? (
+            <Suspense fallback={<div className="h-[440px]" aria-hidden="true" />}>
+              <AccordionGallery
+                items={[
+                  { image: hero, label: "Kabut pagi", alt: "Kabut pagi menyelimuti perbukitan Gampeng Hills" },
+                  { image: story, label: "Berkemah di bukit", alt: "Tenda camping menghadap lembah hijau" },
+                  { image: experience, label: "Ruang untuk jeda", alt: "Kursi dan meja camping menghadap pegunungan" },
+                  { image: evening, label: "Senja di Gampeng", alt: "Tenda camping menyala saat senja" },
+                ]}
+                defaultIndex={0}
+                accentColor="var(--olive)"
+                overlayColor="var(--primary)"
+                textColor="var(--primary-foreground)"
+                height={440}
+                gap={8}
+                radius={6}
+                expandRatio={0.48}
+                trigger="hover"
+              />
+            </Suspense>
+          ) : (
+            <div className="h-[440px]" aria-hidden="true" />
+          )}
+        </div>
       </section>
 
       <section id="faq" className="border-t border-border py-24 md:py-30"><div className="mx-auto grid max-w-[1280px] gap-10 px-6 md:grid-cols-12 md:gap-8 md:px-12"><div data-reveal className="md:col-span-4"><p className="mb-6 text-xs font-bold uppercase tracking-[.22em] text-olive">06 / FAQ</p><h2 className="editorial-title text-[clamp(2.8rem,4.5vw,4.8rem)]">Sebelum berangkat.</h2><p className="mt-7 max-w-xs leading-relaxed text-muted-foreground">Ada yang masih ingin ditanyakan? Kami siap membantu rencana camping-mu.</p></div><div data-reveal className="md:col-start-6 md:col-span-7"><div className="border-t border-border">{questions.map((item, index) => <div className="border-b border-border" key={item.question}><Button variant="faq" className="w-full" onClick={() => setOpenFaq(openFaq === index ? null : index)} aria-expanded={openFaq === index}><span>{item.question}</span>{openFaq === index ? <Minus size={20} /> : <Plus size={20} />}</Button><div className={`grid transition-all duration-300 ease-out ${openFaq === index ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"}`}><div className="overflow-hidden"><p className="max-w-xl pb-7 pr-10 text-sm leading-[1.8] text-muted-foreground">{item.answer}</p></div></div></div>)}</div></div></div></section>
@@ -140,5 +205,24 @@ function Index() {
 
       <footer className="bg-background"><div className="mx-auto max-w-[1280px] px-6 pb-8 pt-16 md:px-12 md:pt-20"><div className="flex flex-col justify-between gap-12 border-b border-border pb-16 md:flex-row"><div><a href="#top" className="text-3xl font-extrabold tracking-[.04em]">GAMPENG <span className="font-normal">HILLS</span></a><p className="mt-3 text-sm text-muted-foreground">Paninggaran · Pekalongan</p></div><div className="grid grid-cols-2 gap-x-14 gap-y-3 text-sm md:grid-cols-3 md:gap-x-20">{navigation.map((item) => <a href={item.href} key={item.href} className="transition-colors hover:text-olive">{item.label}</a>)}<a href={whatsapp} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 hover:text-olive">WhatsApp <ArrowUpRight size={14} /></a></div></div><div className="flex flex-col justify-between gap-3 pt-7 text-xs text-muted-foreground md:flex-row"><span>© 2026 Gampeng Hills Campground</span><a href="#top" className="inline-flex items-center gap-2 hover:text-primary">Kembali ke atas <ArrowRight className="-rotate-45" size={14} /></a></div></div></footer>
     </main>
+  );
+}
+
+function LazyRhythmVideo({ src, poster }: { src: string; poster: string }) {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  useLazyVideo(videoRef, src);
+
+  return (
+    <video
+      ref={videoRef}
+      poster={poster}
+      autoPlay
+      muted
+      loop
+      playsInline
+      preload="none"
+      aria-label="Suasana senja di Gampeng Hills"
+      className="story-image h-full w-full object-cover"
+    />
   );
 }
